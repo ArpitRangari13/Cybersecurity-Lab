@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XSS Demo</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>XSS Simulation</h2>
+
+    <input type="text" id="comment" placeholder="Enter comment">
+    <button onclick="submitComment()">Submit</button>
+
+    <h3>Output (Vulnerable)</h3>
+    <div id="output"></div>
+
+    <h3>Output (Secure)</h3>
+    <div id="safeOutput"></div>
+
+<script>
+function submitComment() {
+    const input = document.getElementById("comment").value;
+
+    // 🚨 Vulnerable
+    document.getElementById("output").innerHTML = input;
+
+    // ✅ Secure
+    document.getElementById("safeOutput").textContent = input;
+}
+</script>
+
+<a href="/">Back</a>
+</body>
+</html>
