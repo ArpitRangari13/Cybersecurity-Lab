@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Encryption Visualizer</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Encryption Visualizer</h2>
+
+    <input type="text" id="text" placeholder="Enter text">
+    <input type="number" id="shift" value="3">
+    <button onclick="caesar()">Caesar Encrypt</button>
+    <button onclick="hash()">SHA-256 Hash</button>
+
+    <h3>Result:</h3>
+    <div id="result"></div>
+
+<script>
+function caesar() {
+    const text = document.getElementById("text").value;
+    const shift = parseInt(document.getElementById("shift").value);
+
+    const encrypted = text.split('').map(char => {
+        if (char.match(/[a-z]/i)) {
+            let code = char.charCodeAt(0);
+            let base = code >= 65 && code <= 90 ? 65 : 97;
+            return String.fromCharCode((code - base + shift) % 26 + base);
+        }
+        return char;
+    }).join('');
+
+    document.getElementById("result").textContent = encrypted;
+}
+
+async function hash() {
+    const text = document.getElementById("text").value;
+    const msgBuffer = new TextEncoder().encode(text);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    document.getElementById("result").textContent = hashHex;
+}
+</script>
+
+<a href="/">Back</a>
+</body>
+</html>
